@@ -20,15 +20,32 @@ class ImageViewHolder(inputView: View) : RecyclerView.ViewHolder(inputView), Vie
     }
 
     override fun onClick(clickedView: View) {
+        when (clickedView.id) {
+            R.id.image_root -> onImageClick()
+            R.id.info -> onInfoClick()
+        }
+    }
+
+    private fun onImageClick() {
+        Log.v(logTag, "Entering onImageClick")
+        if (imageAndListenerLoaded()) imageListener?.openFullImage(image?.download_url ?: "")
+    }
+
+    private fun onInfoClick() {
+        Log.v(logTag, "Entering onInfoClick")
+        if (imageAndListenerLoaded()) imageListener?.openLink(image?.url ?: "")
+    }
+
+    private fun imageAndListenerLoaded(): Boolean {
         if (image == null) {
             Log.e(logTag, missingImageError)
-            return
+            return false
         }
         if (imageListener == null) {
             Log.e(logTag, missingImageListener)
-            return
+            return false
         }
-        imageListener?.openFullImage(image?.download_url ?: "")
+        return true
     }
 
     fun bindImage(image: Image, imageListener: ImageListener) {
@@ -38,6 +55,7 @@ class ImageViewHolder(inputView: View) : RecyclerView.ViewHolder(inputView), Vie
         // https://square.github.io/picasso/2.x/picasso/com/squareup/picasso/Picasso.html#with-android.content.Context- (check get method note)
         Picasso.get().load(image.download_url).fit().centerCrop().into(view.image)
         view.author.text = image.author
+        view.info.setOnClickListener(this)
     }
 
 }
