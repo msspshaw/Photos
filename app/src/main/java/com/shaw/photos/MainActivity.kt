@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.util.Log
 
 interface ImageListener {
-    fun openFullImage(url: String)
-    fun openAuthorLink(authorUrl: String)
+    fun openFullImage(downloadUrl: String)
+    fun openLink(url: String)
 }
 
 class MainActivity : AppCompatActivity(), ImageListener {
     private val logTag = "MainActivity"
-    private val imageUrlMissingError = "The image url is missing for the image that was clicked"
+    private val imageDownloadUrlMissingError = "The image download url is missing for the image that was clicked"
+    private val imageWebUrlMissingError = "The image web url is missing for the image that was clicked"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,19 +29,27 @@ class MainActivity : AppCompatActivity(), ImageListener {
         }
     }
 
-    override fun openFullImage (url: String) {
-        if (url == "") {
-            Log.e(logTag, imageUrlMissingError)
+    override fun openFullImage (downloadUrl: String) {
+        if (downloadUrl == "") {
+            Log.e(logTag, imageDownloadUrlMissingError)
             return
         }
-        val fullImageFragment = fullImageNewInstance(url)
+        val fullImageFragment = fullImageNewInstance(downloadUrl)
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_open_exit)
             .addToBackStack(fullImageClassTag)
             .replace(R.id.fragmentContainer, fullImageFragment).commit()
     }
 
-    override fun openAuthorLink (authorUrl: String) {
-
+    override fun openLink (url: String) {
+        if (url == "") {
+            Log.e(logTag, imageWebUrlMissingError)
+            return
+        }
+        val infoFragment = infoFragmentNewInstance(url)
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.fragment_open_enter, R.anim.fragment_open_exit)
+            .addToBackStack(infoFragmentClassTag)
+            .replace(R.id.fragmentContainer, infoFragment).commit()
     }
 }
