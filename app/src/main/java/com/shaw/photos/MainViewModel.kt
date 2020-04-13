@@ -11,4 +11,12 @@ class MainViewModel : ViewModel() {
     fun getImages(): LiveData<List<Image>> {
         return repository.getList()
     }
+
+    fun sortImagesBySize (ascending: Boolean) {
+        return repository.sortListBySize(ascending)
+    }
+
+    fun sortImagesByAuthor (ascending: Boolean) {
+        return repository.sortListByAuthor(ascending)
+    }
 }
