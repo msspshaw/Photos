@@ -3,4 +3,7 @@
     <string name="back">Back</string>
     <string name="forward">Forward</string>
     <string name="reload">Reload</string>
+    <string name="ID">ID</string>
+    <string name="Author">Author</string>
+    <string name="Size">Size</string>
 </resources>
